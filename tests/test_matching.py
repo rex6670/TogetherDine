@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from app import services
 from app.models import Availability, Invitation, Restaurant, User
@@ -39,7 +39,7 @@ def create_restaurant(restaurant_id: str, location: tuple[float, float]) -> None
 
 
 def test_generate_top_options_prioritizes_high_scores() -> None:
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     slot_a = (now + timedelta(days=1), now + timedelta(days=1, hours=2))
     slot_b = (now + timedelta(days=2), now + timedelta(days=2, hours=2))
 
@@ -72,7 +72,7 @@ def test_generate_top_options_prioritizes_high_scores() -> None:
 
 
 def test_confirm_option_sets_calendar_links() -> None:
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     slot = (now + timedelta(days=1), now + timedelta(days=1, hours=2))
     create_user("host", ["bbq"], (0.0, 0.0))
     repository.set_availabilities(
